@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import helmet from "helmet"; // Importa helmet
 import userRoutes from "./src/routes/user.routes.js";
 import projectRoutes from "./src/routes/project.routes.js";
 
@@ -15,18 +14,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Configuración de Helmet para CSP
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"], // Permitir recursos desde el mismo origen
-            imgSrc: ["'self'", "data:", "https:"], // Permitir imágenes desde el mismo origen y HTTPS
-            scriptSrc: ["'self'", "https://apis.google.com"], // Permitir scripts desde el mismo origen y Google APIs
-            styleSrc: ["'self'", "https://fonts.googleapis.com"], // Permitir estilos desde el mismo origen y Google Fonts
-            // Agrega otras directivas según sea necesario
-        },
-    },
-}));
+
 
 // Permitir que Express entienda formato JSON
 app.use(express.json());
