@@ -24,6 +24,8 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
+//Prueba
+
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectRoutes);
 
