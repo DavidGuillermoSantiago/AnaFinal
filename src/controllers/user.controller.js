@@ -36,3 +36,20 @@ export const createUser = async (req, res) => {
         return res.status(500).json({ message: "Error al crear usuario." });
     }
 };
+
+// Buscar al usuario por su ID
+export const getUserById = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
