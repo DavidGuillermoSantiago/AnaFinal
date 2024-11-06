@@ -37,6 +37,29 @@ export const createUser = async (req, res) => {
     }
 };
 
+export const updateUserById = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const { name, lastname, email } = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { name, lastname, email },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+
 // Buscar al usuario por su ID
 export const getUserById = async (req, res) => {
     try {

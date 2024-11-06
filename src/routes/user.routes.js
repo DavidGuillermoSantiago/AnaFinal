@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser } from '../controllers/user.controller.js';
+import { createUser, updateUserById } from '../controllers/user.controller.js';
 import { signin } from '../controllers/auth.controller.js';
 import { getUserById } from '../controllers/user.controller.js';
 
@@ -9,5 +9,6 @@ const router = Router();
 router.post('/register', createUser);
 router.post('/signin', signin);
 router.get('/:userId', getUserById);
+router.put('/:userId', updateUserById)
 
 export default router;
