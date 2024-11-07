@@ -80,7 +80,7 @@ export const createProject = async (req, res) => {
         const leaderUser = await User.findOne({ email: leader });
 
         if (memberUsers.length !== members.length || !leaderUser) {
-            return res.status(400).json({ message: "Algunos usuarios o el líder no fueron encontrados." });
+            return res.status(200).json({ message: "Algunos usuarios o el líder no fueron encontrados." });
         }
 
         const memberIds = memberUsers.map(user => user._id);
