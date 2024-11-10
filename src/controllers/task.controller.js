@@ -7,8 +7,8 @@ export const getProjectTasks = async (req, res) => {
         const projectId = req.params.id;
 
         const project = await Project.findById(projectId)
-            .populate('leader', 'name lastname') 
-            .populate('members', 'name lastname');
+            .populate('leader', 'name lastname email') 
+            .populate('members', 'name lastname email');
 
         if (!project) {
             return res.status(404).json({ message: "El proyecto no existe." });
