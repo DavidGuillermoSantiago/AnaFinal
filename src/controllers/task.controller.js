@@ -79,3 +79,55 @@ export const createTask = async (req, res) => {
         return res.status(500).json({ message: "Error al crear la tarea." });
     }
 };
+
+export const editTask = async (req, res) => {
+    try {
+        const { taskId } = req.params;
+        const { title, description, assignedToEmails } = req.body;
+
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ message: "La tarea no existe." });
+        }
+
+        if (assignedToEmails && Array.isArray(assignedToEmails)) {
+            const users = await User.find({ email: { $in: assignedToEmails } });
+
+            if (users.length !== assignedToEmails.length) {
+                return res.status(400).json({ message: "Algunos usuarios no fueron encontrados." });
+            }
+
+            const assignedTo = users.map(user => user._id);
+
+            const foundProject = await Project.findById(task.project);
+            const validAssignedUsers = assignedTo.filter(userId => foundProject.members.includes(userId));
+
+            if (validAssignedUsers.length !== assignedTo.length) {
+                return res.status(400).json({ message: "Algunos usuarios no son miembros del proyecto." });
+            }
+
+            task.assignedTo = validAssignedUsers;
+        }
+
+        if (title) {
+            task.title = title;
+        }
+
+        if (description) {
+            task.description = description;
+        }
+
+        const updatedTask = await task.save();
+
+        return res.status(200).json({
+            message: "Tarea actualizada con éxito.",
+            task: updatedTask
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error al editar la tarea." });
+    }
+};
+
+
+
