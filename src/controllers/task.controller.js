@@ -83,7 +83,7 @@ export const createTask = async (req, res) => {
 export const editTask = async (req, res) => {
     try {
         const { taskId } = req.params;
-        const { title, description, assignedToEmails } = req.body;
+        const { title, description, assignedToEmails, status } = req.body;
 
         const task = await Task.findById(taskId);
         if (!task) {
@@ -115,6 +115,10 @@ export const editTask = async (req, res) => {
 
         if (description) {
             task.description = description;
+        }
+
+        if (status) {
+            task.status = status;
         }
 
         const updatedTask = await task.save();
