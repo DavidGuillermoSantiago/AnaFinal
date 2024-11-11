@@ -14,7 +14,7 @@ export const getProjectTasks = async (req, res) => {
             return res.status(404).json({ message: "El proyecto no existe." });
         }
 
-        const tasks = await Task.find({ project: projectId });
+        const tasks = await Task.find({ project: projectId }).populate('assignedTo', 'name lastname email');;
 
         return res.status(200).json({
             project: {
