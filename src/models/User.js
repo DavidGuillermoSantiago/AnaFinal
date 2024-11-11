@@ -33,6 +33,7 @@ userSchema.statics.encryptPassword = async (password) => {
     const salt = await bcrypt.genSalt(10);
     // Retornar la contraseña encriptada
     return await bcrypt.hash(password, salt);
+    
 };
 
 // Método para comparar la contraseña del usuario con la contraseña encriptada
