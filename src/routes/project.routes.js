@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createProject, getUserProjects, deleteProject, addMembersToProject} from '../controllers/project.controller.js';
+import { createProject, getUserProjects, deleteProject, addMembersToProject, removeUserFromProject} from '../controllers/project.controller.js';
 import { createTask, editTask, getProjectTasks } from '../controllers/task.controller.js';
 import { verifyToken } from '../middlewares/authJwt.js';
 
@@ -12,5 +12,6 @@ router.get('/:id', verifyToken, getUserProjects); //obtener el id y nombre de lo
 router.get('/task/:id', verifyToken, getProjectTasks); //obtener los datos y las tareas de un proyecto por id del mismo
 router.delete('/:id', verifyToken, deleteProject); //eliminar un proyecto
 router.put('/:id/members', verifyToken, addMembersToProject); // agregar miembros 
+router.delete('/deletemember/:projectId/users/:userId', verifyToken, removeUserFromProject);
 
 export default router;

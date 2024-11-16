@@ -103,3 +103,39 @@ export const createProject = async (req, res) => {
         return res.status(500).json({ message: "Error al crear el proyecto." });
     }
 };
+
+
+export const removeUserFromProject = async (req, res) => {
+    const { projectId, userId } = req.params;
+
+    try {
+        const project = await Project.findById(projectId);
+
+        if (!project) {
+            return res.status(404).json({ message: "Proyecto no encontrado." });
+        }
+
+        if (project.leader === userId) {
+            await Project.findByIdAndDelete(projectId);
+            return res.status(200).json({ message: "Proyecto eliminado porque el líder fue eliminado." });
+        }
+
+        const memberIndex = project.members.indexOf(userId);
+        if (memberIndex > -1) {
+            project.members.splice(memberIndex, 1);
+        }
+
+        if (project.members.length === 0) {
+            await Project.findByIdAndDelete(projectId);
+            return res.status(200).json({ message: "Proyecto eliminado porque no quedan miembros." });
+        }
+
+        await project.save();
+
+        return res.status(200).json({ message: "Usuario eliminado del proyecto con éxito." });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error al eliminar al usuario del proyecto." });
+    }
+};
+
